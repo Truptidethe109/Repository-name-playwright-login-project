@@ -1,4 +1,6 @@
 
+//Trigger GitHub Actions CI test
+
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
