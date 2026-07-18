@@ -1,0 +1,21 @@
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+
+  testMatch: '**/*.spec.js',
+
+  reporter: 'html',
+
+  use: {
+    baseURL: 'https://www.saucedemo.com',
+    headless: true,
+  },
+
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+});
