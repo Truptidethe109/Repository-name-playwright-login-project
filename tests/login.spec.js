@@ -1,89 +1,81 @@
-
-//Trigger GitHub Actions CI test
-
 import { test, expect } from '@playwright/test';
 
+const loginUrl = 'https://www.saucedemo.com/';
+
+const validUsername = 'standard_user';
+const validPassword = 'secret_sauce';
+
 test.beforeEach(async ({ page }) => {
-
-  // Open login page before every test
-  await page.goto('https://www.saucedemo.com/');
-
+  await page.goto(loginUrl);
 });
 
-test('TC01 - Valid Username and Valid Password', async ({ page }) => {
-
-  await page.locator('#user-name').fill('standard_user');
-
-  await page.locator('#password').fill('secret_sauce');
+// Scenario 1: Valid username and valid password
+test('TC01 - Login with valid username and valid password', async ({ page }) => {
+  await page.locator('#user-name').fill(validUsername);
+  await page.locator('#password').fill(validPassword);
 
   await page.locator('#login-button').click();
 
-  await expect(page).toHaveURL(/inventory/);
-
+  await expect(page).toHaveURL(/inventory.html/);
   await expect(page.locator('.title')).toHaveText('Products');
-
 });
 
-test('TC02 - Invalid Username and Valid Password', async ({ page }) => {
-
-  await page.locator('#user-name').fill('wrong_user');
-
-  await page.locator('#password').fill('secret_sauce');
+// Scenario 2: Invalid username and valid password
+test('TC02 - Login with invalid username and valid password', async ({ page }) => {
+  await page.locator('#user-name').fill('invalid_user');
+  await page.locator('#password').fill(validPassword);
 
   await page.locator('#login-button').click();
 
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-
 });
 
-test('TC03 - Valid Username and Invalid Password', async ({ page }) => {
-
-  await page.locator('#user-name').fill('standard_user');
-
+// Scenario 3: Valid username and invalid password
+test('TC03 - Login with valid username and invalid password', async ({ page }) => {
+  await page.locator('#user-name').fill(validUsername);
   await page.locator('#password').fill('wrong_password');
 
   await page.locator('#login-button').click();
 
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-
 });
 
-test('TC04 - Invalid Username and Invalid Password', async ({ page }) => {
-
-  await page.locator('#user-name').fill('wrong_user');
-
+// Scenario 4: Invalid username and invalid password
+test('TC04 - Login with invalid username and invalid password', async ({ page }) => {
+  await page.locator('#user-name').fill('invalid_user');
   await page.locator('#password').fill('wrong_password');
 
   await page.locator('#login-button').click();
 
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-
 });
 
-test('TC05 - Empty Username and Valid Password', async ({ page }) => {
-
-  await page.locator('#password').fill('secret_sauce');
+// Scenario 5: Empty username and valid password
+test('TC05 - Login with empty username and valid password', async ({ page }) => {
+  await page.locator('#user-name').fill('');
+  await page.locator('#password').fill(validPassword);
 
   await page.locator('#login-button').click();
 
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-
 });
 
-test('TC06 - Valid Username and Empty Password', async ({ page }) => {
-
-  await page.locator('#user-name').fill('standard_user');
+// Scenario 6: Valid username and empty password
+test('TC06 - Login with valid username and empty password', async ({ page }) => {
+  await page.locator('#user-name').fill(validUsername);
+  await page.locator('#password').fill('');
 
   await page.locator('#login-button').click();
 
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-
 });
 
-test('TC07 - Empty Username and Empty Password', async ({ page }) => {
+// Scenario 7: Empty username and empty password
+test('TC07 - Login with empty username and empty password', async ({ page }) => {
+  await page.locator('#user-name').fill('');
+  await page.locator('#password').fill('');
 
   await page.locator('#login-button').click();
 
   await expect(page.locator('[data-test="error"]')).toBeVisible();
-
 });
